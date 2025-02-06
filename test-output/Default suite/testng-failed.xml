@@ -3,11 +3,12 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Practise.Irctc">
+      <class name="HTWebsite.WebsiteBookFlow">
         <methods>
-          <include name="nestedScroll"/>
+          <include name="launchBrowser"/>
+          <include name="Newuser"/>
         </methods>
-      </class> <!-- Practise.Irctc -->
+      </class> <!-- HTWebsite.WebsiteBookFlow -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
