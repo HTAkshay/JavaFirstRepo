@@ -96,6 +96,9 @@ public class WebsiteBookFlow {
 	@Test(description = "NewCustomer")
 	public void Newuser() throws InterruptedException {
 
+		
+		WebDriverWait wait=new WebDriverWait(driver,Duration.ofSeconds(10));
+		
 		// verify title by assertion
 		driver.navigate().to("https://webd004.healthians.co.in/");
 //String actualTitle = driver.getTitle();
@@ -232,11 +235,26 @@ public class WebsiteBookFlow {
 	
 	
 	*/
-	
-	
-		driver.findElement(By.xpath("//*[@onclick='addMemberWithPackage(this)']")).click();
-		Thread.sleep(2000);
-		/*
+		
+		
+		List<WebElement> nameElements = driver.findElements(By.xpath("//div[@class='wrap-section']//div[@class='custmer_inf']/strong"));
+		
+        for (WebElement nameElement : nameElements) {
+            // Check if the text is 'Mina'
+            if (nameElement.getText().trim().equalsIgnoreCase("Hita,")) {
+                // Locate the associated checkbox (assuming it's a sibling or nearby element)
+                WebElement checkbox = nameElement.findElement(By.xpath("./following-sibling::input[@onclick='addMemberWithPackage(this)']"));
+              //input[@onclick='addMemberWithPackage(this)']
+                // Click the checkbox if not already selected
+                if (!checkbox.isSelected()) {
+                    checkbox.click();
+                    System.out.println("Checkbox for Mina clicked.");
+                } else {
+                    System.out.println("Checkbox for Mina is already selected.");
+                }
+                break; // Exit loop after finding and clicking Mina's checkbox
+            }
+        }
 		
 		
      //Next button is clickable or not,by assertion.
@@ -247,39 +265,32 @@ public class WebsiteBookFlow {
 		//Thread.sleep(3000);
 		
 		
-		*/
-		 try {
-			 
-			 
-		 WebElement nextButton = driver.findElement(By.xpath("//*[@class='btn_3 mtl_30 ga_add_memeber_next_button']"));
-		
-		 
-	
-		 if(nextButton.isDisplayed())	{
-			 
-			 
-			 nextButton.click();
-			 Thread.sleep(3000);
-			 
-		 }else {
-			 
-			 System.out.println("Next button is not in view Hence Scrolling");
-			 
-			 js3.executeScript("scroll(0, 200);");
-			 nextButton.click();
-			 Thread.sleep(3000);
-		 }
-		 }catch(Exception e) {
-			 
-			 
-			 System.out.println(e);
-		 }
+		try {
+		    JavascriptExecutor jss = (JavascriptExecutor) driver; // Ensure js is defined
+
+		    WebDriverWait waitt = new WebDriverWait(driver, Duration.ofSeconds(10));
+		    WebElement nextButton = waitt.until(ExpectedConditions.presenceOfElementLocated(
+		        By.xpath("//*[@class='btn_3 mtl_30 ga_add_memeber_next_button']")));
+
+		    if (nextButton.isDisplayed()) {
+		        nextButton.click();
+		    } else {
+		        System.out.println("Next button is not in view. Scrolling...");
+		        jss.executeScript("arguments[0].scrollIntoView(true);", nextButton);
+
+		        waitt.until(ExpectedConditions.elementToBeClickable(nextButton)).click(); // Ensure it is clickable before clicking
+		    }
+
+		} catch (Exception e) {
+		    System.out.println("Exception occurred: " + e.getMessage());
+		}
 		 
 
 		// JavascriptExecutor jss= (JavascriptExecutor) driver;
 		// jss.executeScript("arguments[0].scrollIntoView(true)",driver.findElement(By.xpath("//*[@class='logininput
 		// borderred ga_booking_sample_collection_date']")));
 		Thread.sleep(3000);
+		//select date
 		driver.findElement(By.xpath("//*[@class='logininput borderred ga_booking_sample_collection_date']")).click();
 
 		WebDriverWait wait5 = new WebDriverWait(driver, Duration.ofSeconds(90));

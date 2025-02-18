@@ -3,12 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="HTWebsite.WebsiteBookFlow">
+      <class name="HTWebsite.HTwebsiteFlow">
         <methods>
-          <include name="launchBrowser"/>
-          <include name="Newuser"/>
+          <include name="NewUser"/>
+          <include name="initialize"/>
+          <include name="cleanup"/>
         </methods>
-      </class> <!-- HTWebsite.WebsiteBookFlow -->
+      </class> <!-- HTWebsite.HTwebsiteFlow -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
