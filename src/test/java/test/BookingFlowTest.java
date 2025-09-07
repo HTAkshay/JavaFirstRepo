@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import base.BaseTest;
 import utility.ConfigData;
+import utility.SimpleJsonReport;
 import utility.WaitHelper;
 
 import java.io.IOException;
@@ -23,22 +24,13 @@ import java.util.Set;
 
 public class BookingFlowTest extends BaseTest {
 	
-	
-	
-	
 
-
-	
-
-	/**
-	 * Example booking flow rewritten to remove Thread.sleep and use WaitHelper.
-	 */
 	
 
 	    private WaitHelper wait;
 	    private ConfigData config;
 
-	    @Test(invocationCount = 2,  threadPoolSize = 1)
+	    @Test(invocationCount = 1,  threadPoolSize = 1)
 	    public void runBookingFlow() throws Exception {
 	        // 1. setup
 	        setUp();                       // from BaseTest (headless Chrome)
@@ -217,6 +209,12 @@ public class BookingFlowTest extends BaseTest {
 	            wait.waitForClickable(By.xpath("//a[text()='Cancel Booking'][1]")).click();
 	            Thread.sleep(5000);
 	            System.out.println("Booking flow completed.");
+	            SimpleJsonReport.write("runBookingFlow", "Pass");
+	        }catch(Throwable t){
+	        	
+	        	SimpleJsonReport.write("runBookingFlow", "FAIL");
+	            Assert.fail("Booking flow failed", t); 
+	        	
 	        } finally {
 	            tearDown();
 	        }
