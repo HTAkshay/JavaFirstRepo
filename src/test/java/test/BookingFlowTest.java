@@ -29,6 +29,7 @@ public class BookingFlowTest extends BaseTest {
 
 	    private WaitHelper wait;
 	    private ConfigData config;
+	    String booking_id = null; 
 
 	    @Test(invocationCount = 1,  threadPoolSize = 1)
 	    public void runBookingFlow() throws Exception {
@@ -56,7 +57,7 @@ public class BookingFlowTest extends BaseTest {
 	                    wait.waitForAllVisible(By.xpath("//span[@style='float:left;']"));
 
 	            for (WebElement testlist : suggestions) {
-	                if (testlist.getText().equalsIgnoreCase("healthians advance fever package")) {
+	                if (testlist.getText().equalsIgnoreCase(config.get("testname"))) {
 	                    testlist.click();
 	                    break;
 	                }
@@ -200,6 +201,8 @@ public class BookingFlowTest extends BaseTest {
 	            wait.waitForClickable(By.id("payment_out")).click();
                    Thread.sleep(2000);
 	            // 10. cancel booking
+                  String booking_id = wait.waitForClickable(By.xpath("(//div[@class='booking_info_inner'])[1]//h3")).getText();
+                   
 	            WebElement fullCancel = wait.waitForVisible(By.xpath("(//button[@title='Cancel'])[1]"));
 	            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", fullCancel);
 
@@ -209,10 +212,12 @@ public class BookingFlowTest extends BaseTest {
 	            wait.waitForClickable(By.xpath("//a[text()='Cancel Booking'][1]")).click();
 	            Thread.sleep(5000);
 	            System.out.println("Booking flow completed.");
-	            SimpleJsonReport.write("runBookingFlow", "Pass");
+	            SimpleJsonReport.write("runBookingFlow", "Pass",booking_id);
+	           
 	        }catch(Throwable t){
 	        	
-	        	SimpleJsonReport.write("runBookingFlow", "FAIL");
+	    
+				SimpleJsonReport.write("runBookingFlow", "FAIL",booking_id);
 	            Assert.fail("Booking flow failed", t); 
 	        	
 	        } finally {
@@ -225,7 +230,7 @@ public class BookingFlowTest extends BaseTest {
 	    private String fetchOtpByPolling(String mobileNumber) throws IOException {
 	        String otp = null;
 	        int retries = 20;
-	        String dbUrl = config.get("awsdburl");
+	        String dbUrl = config.get("dburl");
 	        String dbUser = config.get("dbuser");
 	        String dbPass = config.get("dbpassword");
 	        String query = "SELECT otp_code FROM user_otp WHERE mobile_no = ? AND status = 1 ORDER BY session_start_time DESC LIMIT 1";
